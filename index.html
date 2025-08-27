@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Training Tools - Interactive Learning Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000e3b 0%, #1e3a8a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ffffff, #dae6f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            color: #dae6f7;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .tool-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(218, 230, 247, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #d14c6b, #ffffff);
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(209, 76, 107, 0.2);
+            border-color: rgba(209, 76, 107, 0.3);
+        }
+        
+        .tool-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #d14c6b, #ff6b9d);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(209, 76, 107, 0.3);
+        }
+        
+        .tool-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        
+        .tool-card p {
+            color: #dae6f7;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+        
+        .tool-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .tool-features li {
+            color: #dae6f7;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .tool-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #d14c6b;
+            font-weight: bold;
+        }
+        
+        .demo-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #d14c6b, #ff6b9d);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(209, 76, 107, 0.3);
+        }
+        
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(209, 76, 107, 0.5);
+            background: linear-gradient(135deg, #ff6b9d, #d14c6b);
+        }
+        
+        .coming-soon {
+            background: linear-gradient(135deg, rgba(107, 114, 128, 0.3), rgba(75, 85, 99, 0.3));
+            border-color: rgba(156, 163, 175, 0.2);
+        }
+        
+        .coming-soon::before {
+            background: linear-gradient(90deg, #6b7280, #9ca3af);
+        }
+        
+        .coming-soon .demo-button {
+            background: linear-gradient(135deg, #6b7280, #9ca3af);
+            cursor: not-allowed;
+        }
+        
+        .coming-soon .demo-button:hover {
+            transform: none;
+            box-shadow: 0 5px 20px rgba(107, 114, 128, 0.3);
+        }
+        
+        .about-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(218, 230, 247, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .about-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        
+        .about-section p {
+            color: #dae6f7;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(218, 230, 247, 0.1);
+        }
+        
+        .footer p {
+            color: #dae6f7;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .tool-card {
+                padding: 30px;
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>RAG Training Tools</h1>
+            <p>Master Retrieval-Augmented Generation with interactive demonstrations. Explore how RAG systems work through hands-on simulations and visualizations.</p>
+        </div>
+        
+        <div class="tools-grid">
+            <div class="tool-card">
+                <div class="tool-icon">🎯</div>
+                <h3>Top-K Parameter Simulator</h3>
+                <p>Understand how the number of retrieved passages affects RAG performance, cost, and answer quality.</p>
+                <ul class="tool-features">
+                    <li>Interactive K parameter adjustment</li>
+                    <li>Real-time performance metrics</li>
+                    <li>Document relevance visualization</li>
+                    <li>Cost-benefit analysis</li>
+                </ul>
+                <a href="https://claude.ai/public/artifacts/bb364f69-02da-4cf8-80b1-2cf3a488983d" class="demo-button">Launch Demo</a>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">📊</div>
+                <h3>Vector Similarity 2D</h3>
+                <p>Visualize semantic similarity between queries and documents in an interactive 2D vector space.</p>
+                <ul class="tool-features">
+                    <li>2D vector space representation</li>
+                    <li>Cosine similarity visualization</li>
+                    <li>Interactive query selection</li>
+                    <li>Document clustering display</li>
+                </ul>
+                <a href="https://claude.ai/public/artifacts/5d7fef20-ab8c-4b16-810a-c2aa379c0024" class="demo-button">Launch Demo</a>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">🔄</div>
+                <h3>RAG Pipeline Visualizer</h3>
+                <p>Step-through the complete RAG process from query to response with animated pipeline visualization.</p>
+                <ul class="tool-features">
+                    <li>Step-by-step pipeline animation</li>
+                    <li>Real embedding transformations</li>
+                    <li>Context retrieval process</li>
+                    <li>LLM response generation</li>
+                </ul>
+                <a href="https://claude.ai/public/artifacts/a8d3c59a-68a4-46fa-96ed-76b60db6f40c" class="demo-button">Launch Demo</a>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">🎨</div>
+                <h3>3D Embeddings Explorer</h3>
+                <p>Explore document embeddings in interactive 3D space to understand how semantic similarity creates clusters.</p>
+                <ul class="tool-features">
+                    <li>3D vector space navigation</li>
+                    <li>Document clustering visualization</li>
+                    <li>Interactive rotation controls</li>
+                    <li>Category-based color coding</li>
+                </ul>
+                <a href="https://claude.ai/public/artifacts/58b0dce2-8156-4e2f-8520-f5b8f5fcd30e" class="demo-button">Launch Demo</a>
+            </div>
+        </div>
+        
+        <div class="about-section">
+            <h2>About RAG Training Tools</h2>
+            <p>
+                These interactive demonstrations are designed to provide hands-on learning experiences for understanding 
+                Retrieval-Augmented Generation systems. Each tool focuses on a specific aspect of RAG architecture, 
+                from parameter optimization to vector space visualization. Perfect for students, developers, and AI 
+                practitioners looking to deepen their understanding of modern NLP systems.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2025 RAG Training Tools | Built for Interactive Learning - Datalo</p>
+        </div>
+    </div>
+</body>
+</html>
